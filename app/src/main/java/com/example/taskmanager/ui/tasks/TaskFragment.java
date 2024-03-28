@@ -1,4 +1,4 @@
-package com.example.taskmanager.ui.gallery;
+package com.example.taskmanager.ui.tasks;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,18 +10,18 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.taskmanager.databinding.FragmentGalleryBinding;
+import com.example.taskmanager.databinding.FragmentTaskBinding;
 
-public class GalleryFragment extends Fragment {
+public class TaskFragment extends Fragment {
 
-    private FragmentGalleryBinding binding;
+    private FragmentTaskBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        GalleryViewModel galleryViewModel =
-                new ViewModelProvider(this).get(GalleryViewModel.class);
+        TaskViewModel galleryViewModel =
+                new ViewModelProvider(this).get(TaskViewModel.class);
 
-        binding = FragmentGalleryBinding.inflate(inflater, container, false);
+        binding = FragmentTaskBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textGallery;
