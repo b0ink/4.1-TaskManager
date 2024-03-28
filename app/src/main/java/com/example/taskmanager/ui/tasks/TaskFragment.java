@@ -57,8 +57,9 @@ public class TaskFragment extends Fragment {
 
         btnAddTask = root.findViewById(R.id.btn_add_task);
         btnAddTask.setOnClickListener((View view)->{
+            int position = tasks.size();
             tasks.add(new Task("NEW TASK!", "finish 21123123", "tomorrow!", 0));
-            adapter.notifyDataSetChanged();
+            adapter.notifyItemInserted(position);
         });
         return root;
     }
