@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,8 @@ public class TaskFragment extends Fragment {
     private FragmentTaskBinding binding;
     private RecyclerView recyclerViewTasks;
 
+    private Button btnAddTask;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         TaskViewModel galleryViewModel =
@@ -39,7 +42,11 @@ public class TaskFragment extends Fragment {
         recyclerViewTasks = root.findViewById(R.id.recycler_view_tasks);
         recyclerViewTasks.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        // Assuming you have a list of tasks
+        //TODO: on change of fragment (switching between dashboard/tasks/etc), data set is lost
+        // -> dataset must be dynamically retrieved everytime here
+        // -> don't bother with a local storage/cache if using sqlite
+        // -> look into SyncAdapters?
+
         List<Task> tasks = new ArrayList<Task>();
         tasks.add(new Task("do homework", "finish this", "today!", 0));
         tasks.add(new Task("clean house", "finish asdf", "yesterday!", 0));
@@ -48,7 +55,11 @@ public class TaskFragment extends Fragment {
         TaskAdapter adapter = new TaskAdapter(tasks);
         recyclerViewTasks.setAdapter(adapter);
 
-
+        btnAddTask = root.findViewById(R.id.btn_add_task);
+        btnAddTask.setOnClickListener((View view)->{
+            tasks.add(new Task("NEW TASK!", "finish 21123123", "tomorrow!", 0));
+            adapter.notifyDataSetChanged();
+        });
         return root;
     }
 
