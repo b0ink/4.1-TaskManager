@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
     <!-- Task Description -->
     <TextView
@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:textSize="16sp"/>
+        android:textSize="16sp" />
 
     <!-- Task Due Date -->
     <TextView
@@ -27,8 +27,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:textSize="14sp"
-        android:textColor="@android:color/darker_gray"/>
+        android:textColor="@android:color/black"
+        android:textSize="14sp" />
 
     <!-- Priority Indicator -->
     <ImageView
@@ -36,6 +36,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:src="@drawable/ic_menu_camera"/>
+        android:src="@drawable/ic_menu_camera" />
 
 </LinearLayout>

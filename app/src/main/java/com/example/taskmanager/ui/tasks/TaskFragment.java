@@ -48,17 +48,17 @@ public class TaskFragment extends Fragment {
         // -> look into SyncAdapters?
 
         List<Task> tasks = new ArrayList<Task>();
-        tasks.add(new Task("do homework", "finish this", "today!", 0, 1));
-        tasks.add(new Task("clean house", "finish asdf", "yesterday!", 0, 2));
-        tasks.add(new Task("do nothing", "finish 21123123", "tomorrow!", 0, 3));
+        tasks.add(new Task("do homework", "finish this", "21/05/2025", 0, 1));
+        tasks.add(new Task("clean house", "finish asdf", "05/11/2025", 0, 2));
+        tasks.add(new Task("do nothing", "finish 21123123", "05/09/2024", 0, 3));
 
         TaskAdapter adapter = new TaskAdapter(tasks);
         recyclerViewTasks.setAdapter(adapter);
 
         btnAddTask = root.findViewById(R.id.btn_add_task);
-        btnAddTask.setOnClickListener((View view)->{
+        btnAddTask.setOnClickListener((View view) -> {
             int position = tasks.size();
-            tasks.add(new Task("NEW TASK!", "finish 21123123", "tomorrow!", 0, 2));
+            tasks.add(new Task("NEW TASK!", "finish 21123123", "01/07/2049", 0, 2));
             adapter.notifyItemInserted(position);
         });
         return root;
