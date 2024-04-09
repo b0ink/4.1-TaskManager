@@ -131,7 +131,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
 
                     final String[] taskOptions = {
-                            "View task", "Edit task", "Set priority", "Delete Task"
+                            "View task", "Edit task", "Set priority", "Delete task"
                     };
 
                     builder.setTitle("Task options");
@@ -143,7 +143,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                             } else if ("Edit task".equals(taskOptions[which])) {
                                 //TODO: send them back to the add/edit task activity with prefilled details, option to save instead of add
                             } else if ("Set priority".equals(taskOptions[which])) {
-                                //TODO: send new AlertDialog of priority options
                                 showChangePriorityDialog(getAdapterPosition());
                             } else if ("Delete task".equals(taskOptions[which])) {
                                 showDeleteDialog(getAdapterPosition());
