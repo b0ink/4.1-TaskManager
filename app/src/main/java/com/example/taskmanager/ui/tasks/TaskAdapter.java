@@ -1,5 +1,8 @@
 package com.example.taskmanager.ui.tasks;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -141,6 +144,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                             if ("View task".equals(taskOptions[which])) {
                                 //TODO: send them to activity/fragment to view task as fullscreen
                             } else if ("Edit task".equals(taskOptions[which])) {
+
+                                Task task = taskList.get(getAdapterPosition());
+                                Intent intent = new Intent(itemView.getContext(), TaskViewActivity.class);
+                                intent.putExtra(TaskViewActivity.EXTRA_TASK_ACTION, "edit");
+                                intent.putExtra(TaskViewActivity.EXTRA_TASK_TITLE, task.getTitle());
+                                intent.putExtra(TaskViewActivity.EXTRA_TASK_DESC, task.getDescription());
+                                intent.putExtra(TaskViewActivity.EXTRA_TASK_DUEDATE, task.dueDateString);
+                                intent.putExtra(TaskViewActivity.EXTRA_TASK_PRIORITY, task.priority);
+                                itemView.getContext().startActivity(intent);
                                 //TODO: send them back to the add/edit task activity with prefilled details, option to save instead of add
                             } else if ("Set priority".equals(taskOptions[which])) {
                                 showChangePriorityDialog(getAdapterPosition());

@@ -18,7 +18,8 @@ public class Task {
 
     private int priorityIcon;
 
-    private LocalDate dueDate;
+    public LocalDate dueDate;
+    public String dueDateString;
 //    = LocalDate.now(); // Create a date object
 
     public int priority;
@@ -46,6 +47,7 @@ public class Task {
         this.dueDate = date;
         this.priorityIcon = priorityIcon;
         this.priority = priority;
+        this.dueDateString = dueDate;
     }
 
     public String getTitle() {
@@ -81,6 +83,7 @@ public class Task {
         }
         return "";
     }
+
 
     public int getPriorityIcon() {
         return this.priorityIcon;
