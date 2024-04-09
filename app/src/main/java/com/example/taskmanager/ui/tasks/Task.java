@@ -12,6 +12,7 @@ public class Task {
     public static final int LOW_PRIORITY = 1;
     public static final int NO_PRIORITY = 0;
 
+    public int id;
     private String title;
     private String description;
 //    private String dueDate;

@@ -35,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+//        dbHelper.addData(new Task("aa", "a", "10/05/2020", 0, 1));
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 

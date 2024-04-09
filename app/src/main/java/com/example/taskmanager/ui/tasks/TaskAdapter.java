@@ -40,6 +40,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         if (position < 0 || position > taskList.size()) {
             throw new IndexOutOfBoundsException("Invalid task specified");
         }
+        //TODO: database/localstorage update as well
         taskList.remove(position);
         notifyItemRemoved(position);
     }
@@ -148,6 +149,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                                 Task task = taskList.get(getAdapterPosition());
                                 Intent intent = new Intent(itemView.getContext(), TaskViewActivity.class);
                                 intent.putExtra(TaskViewActivity.EXTRA_TASK_ACTION, "edit");
+                                intent.putExtra(TaskViewActivity.EXTRA_TASK_ID, task.id);
                                 intent.putExtra(TaskViewActivity.EXTRA_TASK_TITLE, task.getTitle());
                                 intent.putExtra(TaskViewActivity.EXTRA_TASK_DESC, task.getDescription());
                                 intent.putExtra(TaskViewActivity.EXTRA_TASK_DUEDATE, task.dueDateString);
