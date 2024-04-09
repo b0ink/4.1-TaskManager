@@ -1,72 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:layout_margin="8dp"
+    android:padding="16dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- Priority Pill -->
-    <TextView
-        android:id="@+id/priority_pill"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/priority_pill_background_high"
-        android:minWidth="100dp"
-        android:paddingStart="8dp"
-        android:paddingTop="4dp"
-        android:paddingEnd="8dp"
-        android:paddingBottom="4dp"
-        android:text="High"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF" />
-
-    <!-- Task Title -->
-    <TextView
-        android:id="@+id/text_task_title"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/priority_pill"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:padding="15dp">
 
-    <!-- Task Description -->
-    <TextView
-        android:id="@+id/text_task_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/text_task_title"
-        android:layout_marginTop="8dp"
-        android:textSize="16sp" />
+        <!-- Priority Pill -->
+        <TextView
+            android:id="@+id/priority_pill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/priority_pill_background_high"
+            android:minWidth="100dp"
+            android:paddingStart="8dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="4dp"
+            android:text="High"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF" />
 
-    <!-- Task Due Date -->
-    <TextView
-        android:id="@+id/text_due_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/text_task_description"
-        android:layout_marginTop="8dp"
-        android:textColor="@android:color/black"
-        android:textSize="14sp" />
+        <!-- Task Title -->
+        <TextView
+            android:id="@+id/text_task_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/priority_pill"
+            android:text="Placeholder Task Title"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-    <!-- Priority Indicator -->
-    <ImageView
-        android:id="@+id/image_priority"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/text_due_date"
-        android:layout_marginTop="8dp"
-        android:src="@drawable/ic_menu_camera" />
+        <!-- Task Description -->
+        <TextView
+            android:id="@+id/text_task_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_task_title"
+            android:layout_marginTop="8dp"
+            android:text="Placeholder task description"
+            android:textSize="16sp" />
 
-    <!-- Edit Button (Options Menu) -->
-    <ImageView
-        android:id="@+id/edit_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/ic_more_vert_black_24dp" />
+        <!-- Task Due Date -->
+        <TextView
+            android:id="@+id/text_due_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_task_description"
+            android:layout_marginTop="8dp"
+            android:text="31st February 2000"
+            android:textColor="@android:color/black"
+            android:textSize="14sp" />
 
-</RelativeLayout>
+        <!-- Priority Indicator -->
+        <ImageView
+            android:id="@+id/image_priority"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_due_date"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_menu_camera" />
+
+        <!-- Edit Button (Options Menu) -->
+        <ImageView
+            android:id="@+id/edit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_more_vert_black_24dp" />
+
+    </RelativeLayout>
+    </androidx.cardview.widget.CardView>
