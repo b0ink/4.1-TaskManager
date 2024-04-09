@@ -31,7 +31,7 @@ public class TaskFragment extends Fragment {
     private Button btnAddTask;
     private DatabaseHelper dbHelper;
     List<Task> tasks = new ArrayList<Task>();
-TaskAdapter adapter;
+    TaskAdapter adapter;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         TaskViewModel galleryViewModel =
@@ -55,7 +55,7 @@ TaskAdapter adapter;
 
 //        List<Task> tasks = new ArrayList<Task>();
         dbHelper = new DatabaseHelper(root.getContext());
-        adapter = new TaskAdapter(tasks);
+        adapter = new TaskAdapter(root.getContext(), tasks);
 
         getData();
 

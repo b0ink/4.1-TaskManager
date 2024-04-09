@@ -2,6 +2,7 @@ package com.example.taskmanager.ui.tasks;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ import android.content.DialogInterface;
 
 import java.util.List;
 
+import com.example.taskmanager.DatabaseHelper;
 import com.example.taskmanager.R;
 
 import java.util.List;
@@ -33,6 +35,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
 
     private List<Task> taskList;
+    private DatabaseHelper databaseHelper;
 
 
     // CRUD
@@ -58,14 +61,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             return;
         }
 
+
         Task task = taskList.get(position);
         task.priority = priority; // TODO: add private method to udpate priority;
+        databaseHelper.updateData(task);
         notifyItemChanged(position);
 
     }
 
-    public TaskAdapter(List<Task> taskList) {
+    public TaskAdapter(Context context, List<Task> taskList) {
         this.taskList = taskList;
+        this.databaseHelper = new DatabaseHelper(context);
     }
 
     @NonNull
