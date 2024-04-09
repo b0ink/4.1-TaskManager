@@ -29,7 +29,9 @@ public class TaskFragment extends Fragment {
     private RecyclerView recyclerViewTasks;
 
     private Button btnAddTask;
-
+    private DatabaseHelper dbHelper;
+    List<Task> tasks = new ArrayList<Task>();
+TaskAdapter adapter;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         TaskViewModel galleryViewModel =
@@ -51,11 +53,33 @@ public class TaskFragment extends Fragment {
         // -> don't bother with a local storage/cache if using sqlite
         // -> look into SyncAdapters?
 
-        List<Task> tasks = new ArrayList<Task>();
+//        List<Task> tasks = new ArrayList<Task>();
+        dbHelper = new DatabaseHelper(root.getContext());
+        adapter = new TaskAdapter(tasks);
 
-        DatabaseHelper dbHelper = new DatabaseHelper(root.getContext());
+        getData();
+
+
+//        tasks.add(new Task("do homework", "finish this", "21/05/2025", 0, 1));
+//        tasks.add(new Task("clean house", "finish asdf", "05/11/2025", 0, 2));
+//        tasks.add(new Task("do nothing", "finish 21123123", "05/09/2024", 0, 3));
+
+        recyclerViewTasks.setAdapter(adapter);
+
+        btnAddTask = root.findViewById(R.id.btn_add_task);
+        btnAddTask.setOnClickListener((View view) -> {
+            int position = tasks.size();
+            tasks.add(new Task("NEW TASK!", "finish 21123123", "01/07/2049", 0, 2));
+            adapter.notifyItemInserted(position);
+        });
+        return root;
+    }
+
+
+    public void getData(){
         Cursor cursor = dbHelper.getData();
 
+        tasks.clear();
         // Check if the cursor is not null and move it to the first row
         if (cursor != null && cursor.moveToFirst()) {
             do {
@@ -77,26 +101,21 @@ public class TaskFragment extends Fragment {
         if (cursor != null) {
             cursor.close();
         }
-
-//        tasks.add(new Task("do homework", "finish this", "21/05/2025", 0, 1));
-//        tasks.add(new Task("clean house", "finish asdf", "05/11/2025", 0, 2));
-//        tasks.add(new Task("do nothing", "finish 21123123", "05/09/2024", 0, 3));
-
-        TaskAdapter adapter = new TaskAdapter(tasks);
-        recyclerViewTasks.setAdapter(adapter);
-
-        btnAddTask = root.findViewById(R.id.btn_add_task);
-        btnAddTask.setOnClickListener((View view) -> {
-            int position = tasks.size();
-            tasks.add(new Task("NEW TASK!", "finish 21123123", "01/07/2049", 0, 2));
-            adapter.notifyItemInserted(position);
-        });
-        return root;
+        adapter.notifyDataSetChanged();
     }
+
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData();
+
     }
 }

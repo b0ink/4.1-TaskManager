@@ -10,6 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import java.util.List;
+
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -72,6 +76,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     }
 
 
+
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         Task task = taskList.get(position);
@@ -99,6 +104,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     public int getItemCount() {
         return taskList.size();
     }
+
+    public void refreshAdapter() {
+        notifyDataSetChanged();
+    }
+
 
     public class TaskViewHolder extends RecyclerView.ViewHolder {
         private TextView textTaskTitle;
@@ -167,6 +177,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                 }
             });
         }
+
+
 
         private void showChangePriorityDialog(final int position) {
             AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
