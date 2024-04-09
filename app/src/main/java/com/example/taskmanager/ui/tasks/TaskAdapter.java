@@ -25,6 +25,20 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     private List<Task> taskList;
 
+
+    // CRUD
+    public void DeleteTask(Task item){
+        DeleteTask(taskList.indexOf((item)));
+    }
+
+    public void DeleteTask(int position){
+        if(position < 0 || position > taskList.size()){
+            throw new IndexOutOfBoundsException("Invalid task specified");
+        }
+        taskList.remove(position);
+        notifyItemRemoved(position);
+    }
+
     public TaskAdapter(List<Task> taskList) {
         this.taskList = taskList;
     }
@@ -45,16 +59,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         // Set background color based on priority
         switch (task.priority) {
             case Task.HIGH_PRIORITY:
-                holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.high_priority_color));
+                holder.setPriorityPillBackground(R.drawable.priority_pill_background_high);
                 break;
             case Task.MEDIUM_PRIORITY:
-                holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.medium_priority_color));
+                holder.setPriorityPillBackground(R.drawable.priority_pill_background_medium);
                 break;
             case Task.LOW_PRIORITY:
-                holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.low_priority_color));
+                holder.setPriorityPillBackground(R.drawable.priority_pill_background_low);
                 break;
             default:
-                holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.transparent));
+                // Hide priority pill if there is no priority set
+                holder.hidePriorityPill();
                 break;
         }
     }
@@ -70,12 +85,16 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         private TextView textDueDate;
         private ImageView imagePriority;
 
+        private TextView priorityPill;
+
+
         TaskViewHolder(@NonNull View itemView) {
             super(itemView);
             textTaskTitle = itemView.findViewById(R.id.text_task_title);
             textTaskDescription = itemView.findViewById(R.id.text_task_description);
             textDueDate = itemView.findViewById(R.id.text_due_date);
             imagePriority = itemView.findViewById(R.id.image_priority);
+            priorityPill = itemView.findViewById(R.id.priority_pill);
 
 
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -94,6 +113,33 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             textTaskDescription.setText(task.getDescription());
             textDueDate.setText(task.getDueDate());
             imagePriority.setImageResource(task.getPriorityIcon());
+
+            if (task.priority != Task.NO_PRIORITY) {
+                priorityPill.setVisibility(View.VISIBLE);
+                switch (task.priority) {
+                    case Task.HIGH_PRIORITY:
+                        priorityPill.setText("High");
+                        break;
+                    case Task.MEDIUM_PRIORITY:
+                        priorityPill.setText("Medium");
+                        break;
+                    case Task.LOW_PRIORITY:
+                        priorityPill.setText("Low");
+                        break;
+                }
+            } else {
+                hidePriorityPill();
+            }
+        }
+
+
+        public void setPriorityPillBackground( int backgroundResId) {
+            priorityPill.setBackgroundResource(backgroundResId);
+            priorityPill.setVisibility(View.VISIBLE);
+        }
+
+        public void hidePriorityPill() {
+            priorityPill.setVisibility(View.GONE);
         }
 
         private void showDeleteDialog(final int position) {
@@ -103,8 +149,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            taskList.remove(position);
-                            notifyItemRemoved(position);
+//                            taskList.remove(position);
+//                            notifyItemRemoved(position);
+                            DeleteTask(position);
                         }
                     })
                     .setNegativeButton("No", null)
