@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.widget.Toast;
+
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -27,16 +29,31 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
 
     // CRUD
-    public void DeleteTask(Task item){
+    public void DeleteTask(Task item) {
         DeleteTask(taskList.indexOf((item)));
     }
 
-    public void DeleteTask(int position){
-        if(position < 0 || position > taskList.size()){
+    public void DeleteTask(int position) {
+        if (position < 0 || position > taskList.size()) {
             throw new IndexOutOfBoundsException("Invalid task specified");
         }
         taskList.remove(position);
         notifyItemRemoved(position);
+    }
+
+    public void changeTaskPriority(final int position, int priority){
+        if (position < 0 || position > taskList.size()) {
+            throw new IndexOutOfBoundsException("Invalid task specified");
+        }
+
+        if(priority < 0 || priority > 3){
+            return;
+        }
+
+        Task task = taskList.get(position);
+        task.priority = priority; // TODO: add private method to udpate priority;
+        notifyItemChanged(position);
+
     }
 
     public TaskAdapter(List<Task> taskList) {
@@ -86,6 +103,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         private ImageView imagePriority;
 
         private TextView priorityPill;
+        private ImageView editButton;
 
 
         TaskViewHolder(@NonNull View itemView) {
@@ -95,18 +113,64 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             textDueDate = itemView.findViewById(R.id.text_due_date);
             imagePriority = itemView.findViewById(R.id.image_priority);
             priorityPill = itemView.findViewById(R.id.priority_pill);
+            editButton = itemView.findViewById(R.id.edit_button);
 
 
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+//            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+//                @Override
+//                public boolean onLongClick(View v) {
+//                    int position = getAdapterPosition();
+//                    showDeleteDialog(position);
+//                    return true;
+//                }
+//            });
+
+            editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public boolean onLongClick(View v) {
-                    int position = getAdapterPosition();
-                    showDeleteDialog(position);
-                    return true;
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
+
+                    final String[] taskOptions = {
+                            "View task", "Edit task", "Set priority", "Delete Task"
+                    };
+
+                    builder.setTitle("Task options");
+                    builder.setItems(taskOptions, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if ("View task".equals(taskOptions[which])) {
+                                //TODO: send them to activity/fragment to view task as fullscreen
+                            } else if ("Edit task".equals(taskOptions[which])) {
+                                //TODO: send them back to the add/edit task activity with prefilled details, option to save instead of add
+                            } else if ("Set priority".equals(taskOptions[which])) {
+                                //TODO: send new AlertDialog of priority options
+                                showChangePriorityDialog(getAdapterPosition());
+                            } else if ("Delete task".equals(taskOptions[which])) {
+                                showDeleteDialog(getAdapterPosition());
+                            }
+                        }
+                    });
+                    builder.show();
                 }
             });
         }
 
+        private void showChangePriorityDialog(final int position) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
+
+            final String[] priorityOptions = {
+                    "None", "Low", "Medium", "High"
+            };
+
+            builder.setTitle("Set task priority");
+            builder.setItems(priorityOptions, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    changeTaskPriority(position, which);
+                }
+            });
+            builder.show();
+        }
 
         void bind(Task task) {
             textTaskTitle.setText(task.getTitle());
@@ -133,7 +197,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         }
 
 
-        public void setPriorityPillBackground( int backgroundResId) {
+        public void setPriorityPillBackground(int backgroundResId) {
             priorityPill.setBackgroundResource(backgroundResId);
             priorityPill.setVisibility(View.VISIBLE);
         }
