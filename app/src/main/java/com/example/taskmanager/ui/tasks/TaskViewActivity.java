@@ -101,6 +101,22 @@ public class TaskViewActivity extends AppCompatActivity {
         addButton.setOnClickListener((View view)->{
             if(task != null){
                 task.setTitle(titleEditText.getText().toString());
+                task.setDescription(descriptionEditText.getText().toString());
+//                String dueDateString = datePicker.getDayOfMonth()+ "/" + datePicker.getMonth()+1 + "/" + datePicker.getYear();
+//                String dueDateString = datePicker.getDayOfMonth() + "/" + (datePicker.getMonth() + 1) + "/" + datePicker.getYear();
+
+                //TODO: implement date converter util
+                String dueDateString = "";
+                if(datePicker.getDayOfMonth() < 10){
+                    dueDateString += "0";
+                }
+                dueDateString += datePicker.getDayOfMonth() + "/";
+                if((datePicker.getMonth()+1) < 10){
+                    dueDateString += "0";
+                }
+                dueDateString += (datePicker.getMonth() + 1) + "/" + datePicker.getYear();
+                task.dueDateString = dueDateString;
+
                 dbHelper.updateData(task);
                 finish();
             }
