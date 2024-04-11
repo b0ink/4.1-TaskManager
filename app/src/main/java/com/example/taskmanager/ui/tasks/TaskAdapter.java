@@ -153,7 +153,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                 Task task = taskList.get(position);
                 task.isComplete = checkbox.isChecked();
                 databaseHelper.updateData(task);
-                notifyItemChanged(position);
+                if(task.isComplete){
+                    notifyItemMoved(position, taskList.size()-1);
+                }else{
+                    notifyItemMoved(position, 0);
+                }
             });
 
             editButton.setOnClickListener(new View.OnClickListener() {
