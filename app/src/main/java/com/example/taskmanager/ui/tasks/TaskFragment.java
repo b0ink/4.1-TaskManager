@@ -3,12 +3,16 @@ package com.example.taskmanager.ui.tasks;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,7 +26,10 @@ import com.example.taskmanager.R;
 import com.example.taskmanager.databinding.FragmentTaskBinding;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 public class TaskFragment extends Fragment {
 
@@ -31,8 +38,13 @@ public class TaskFragment extends Fragment {
 
     private Button btnAddTask;
     private DatabaseHelper dbHelper;
+
+    private Spinner spnSortBy;
+    private ArrayAdapter<String> sortByOptions;
+
     List<Task> tasks = new ArrayList<Task>();
     TaskAdapter adapter;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         TaskViewModel galleryViewModel =
@@ -47,6 +59,8 @@ public class TaskFragment extends Fragment {
 
 //        recyclerViewTasks = findViewById(R.id.recycler_view_tasks);
         recyclerViewTasks = root.findViewById(R.id.recycler_view_tasks);
+        spnSortBy = root.findViewById(R.id.spinner_sortby);
+
         recyclerViewTasks.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         //TODO: on change of fragment (switching between dashboard/tasks/etc), data set is lost
@@ -59,6 +73,35 @@ public class TaskFragment extends Fragment {
         adapter = new TaskAdapter(root.getContext(), tasks);
 
         getData();
+
+        sortByOptions = new ArrayAdapter<>(root.getContext(), android.R.layout.simple_spinner_item);
+        sortByOptions.add("Sort by: Due date ▲");
+        sortByOptions.add("Sort by: Due date ▼");
+        sortByOptions.add("Sort by: Priority ▲");
+        sortByOptions.add("Sort by: Priority ▼");
+
+        spnSortBy.setAdapter(sortByOptions);
+        AdapterView.OnItemSelectedListener spinnerSortByChanged = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if (position == 0) {
+                    SortTasksByDueDate("newest");
+                } else if (position == 1) {
+                    SortTasksByDueDate("oldest");
+                }else if (position == 2){
+                    SortTasksByPriority("lowest");
+                }else if (position == 3){
+                    SortTasksByPriority("highest");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+
+            }
+        };
+
+        spnSortBy.setOnItemSelectedListener(spinnerSortByChanged);
 
 
 //        tasks.add(new Task("do homework", "finish this", "21/05/2025", 0, 1));
@@ -81,7 +124,62 @@ public class TaskFragment extends Fragment {
     }
 
 
-    public void getData(){
+    public void SortTasksByDueDate(String type) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            tasks.sort(new Comparator<Task>() {
+                @Override
+                public int compare(Task o1, Task o2) {
+                    if (Objects.equals(type, "newest")) {
+                        return o1.dueDate.compareTo(o2.dueDate);
+                    } else if (Objects.equals(type, "oldest")) {
+                        return o2.dueDate.compareTo(o1.dueDate);
+                    }
+                    return 0;
+                }
+            });
+        }
+        SortTasksByCompletion();
+        adapter.notifyDataSetChanged();
+    }
+
+    public void SortTasksByPriority(String type) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            tasks.sort(new Comparator<Task>() {
+                @Override
+                public int compare(Task o1, Task o2) {
+                    if (Objects.equals(type, "lowest")) {
+                        return o1.priority - o2.priority;
+                    } else if (Objects.equals(type, "highest")) {
+                        return o2.priority - o1.priority;
+                    }
+                    return 0;
+                }
+            });
+        }
+
+        SortTasksByCompletion();
+        adapter.notifyDataSetChanged();
+    }
+
+    public void SortTasksByCompletion(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            tasks.sort(new Comparator<Task>() {
+                @Override
+                public int compare(Task o1, Task o2) {
+                    int o1Complete = o1.isComplete ? 1 : 0;
+                    int o2Complete = o2.isComplete ? 1 : 0;
+
+                    return o1Complete - o2Complete;
+                }
+            });
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    public void getData() {
         Cursor cursor = dbHelper.getData();
 
         tasks.clear();
@@ -95,7 +193,7 @@ public class TaskFragment extends Fragment {
                 @SuppressLint("Range") int priority = cursor.getInt(cursor.getColumnIndex("Priority"));
                 @SuppressLint("Range") Boolean isComplete = cursor.getInt(cursor.getColumnIndex("IsComplete")) != 0;
 
-                Task newtask = new Task(title, description, dueDate,0,  priority, isComplete);
+                Task newtask = new Task(title, description, dueDate, 0, priority, isComplete);
                 newtask.id = id;
                 // Do something with the retrieved data (e.g., display it, process it)
 //                Log.d("Data", "ID: " + id + ", Name: " + name);
@@ -107,7 +205,8 @@ public class TaskFragment extends Fragment {
         if (cursor != null) {
             cursor.close();
         }
-        adapter.notifyDataSetChanged();
+
+        SortTasksByDueDate("newest");
     }
 
 
