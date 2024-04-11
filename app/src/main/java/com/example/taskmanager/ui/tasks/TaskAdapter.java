@@ -162,8 +162,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
 
                     final String[] taskOptions = {
-                            "View task", "Edit task", "Set priority", "Delete task"
+                            "View task", "Edit task", "Set priority", "Mark complete", "Delete task"
                     };
+
+                    Task task = taskList.get(getAdapterPosition());
+                    if(task.isComplete){
+                        taskOptions[3] = "Mark incomplete";
+                    }
 
                     builder.setTitle("Task options");
                     builder.setItems(taskOptions, new DialogInterface.OnClickListener() {
@@ -173,7 +178,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                                 //TODO: send them to activity/fragment to view task as fullscreen
                             } else if ("Edit task".equals(taskOptions[which])) {
 
-                                Task task = taskList.get(getAdapterPosition());
                                 Intent intent = new Intent(itemView.getContext(), TaskViewActivity.class);
                                 intent.putExtra(TaskViewActivity.EXTRA_TASK_ACTION, "edit");
                                 intent.putExtra(TaskViewActivity.EXTRA_TASK_ID, task.id);
@@ -184,6 +188,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                                 intent.putExtra(TaskViewActivity.EXTRA_TASK_COMPLETE, task.isComplete);
                                 itemView.getContext().startActivity(intent);
                                 //TODO: send them back to the add/edit task activity with prefilled details, option to save instead of add
+                            } else if ("Mark complete".equals(taskOptions[which])) {
+                                task.isComplete = true;
+                                databaseHelper.updateData(task);
+                                notifyItemChanged(getAdapterPosition());
+                            } else if ("Mark incomplete".equals(taskOptions[which])) {
+                                task.isComplete = false;
+                                notifyItemChanged(getAdapterPosition());
                             } else if ("Set priority".equals(taskOptions[which])) {
                                 showChangePriorityDialog(getAdapterPosition());
                             } else if ("Delete task".equals(taskOptions[which])) {
