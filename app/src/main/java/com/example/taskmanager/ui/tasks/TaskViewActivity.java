@@ -78,16 +78,16 @@ public class TaskViewActivity extends AppCompatActivity {
         task = null;
 
         Intent resultsIntent = getIntent();
-        if(resultsIntent != null){
+        if (resultsIntent != null) {
             String action = resultsIntent.getStringExtra(TaskViewActivity.EXTRA_TASK_ACTION);
-            String taskTitle = resultsIntent.getStringExtra(TaskViewActivity.EXTRA_TASK_TITLE);
-            String taskDesc = resultsIntent.getStringExtra(TaskViewActivity.EXTRA_TASK_DESC);
-            String taskDate = resultsIntent.getStringExtra(TaskViewActivity.EXTRA_TASK_DUEDATE);
-            int taskId = resultsIntent.getIntExtra(TaskViewActivity.EXTRA_TASK_ID, 0);
-            int taskPriority = resultsIntent.getIntExtra(TaskViewActivity.EXTRA_TASK_PRIORITY, 0);
+            if (action.equals("edit")) {
+                String taskTitle = resultsIntent.getStringExtra(TaskViewActivity.EXTRA_TASK_TITLE);
+                String taskDesc = resultsIntent.getStringExtra(TaskViewActivity.EXTRA_TASK_DESC);
+                String taskDate = resultsIntent.getStringExtra(TaskViewActivity.EXTRA_TASK_DUEDATE);
+                int taskId = resultsIntent.getIntExtra(TaskViewActivity.EXTRA_TASK_ID, 0);
+                int taskPriority = resultsIntent.getIntExtra(TaskViewActivity.EXTRA_TASK_PRIORITY, 0);
 
 
-            if(action.equals("edit")){
                 task = new Task(taskTitle, taskDesc, taskDate, 0, taskPriority);
                 task.id = taskId;
                 titleTextView.setText("Edit task");
@@ -106,8 +106,14 @@ public class TaskViewActivity extends AppCompatActivity {
         }
 
 
-        addButton.setOnClickListener((View view)->{
-            if(task != null){
+        addButton.setOnClickListener((View view) -> {
+            Boolean isNewTask = false;
+            if(task == null){
+                task = new Task("", "", "01/01/1970", 0, 0);
+                isNewTask = true;
+            }
+
+            if (task != null) {
                 task.setTitle(titleEditText.getText().toString());
                 task.setDescription(descriptionEditText.getText().toString());
 //                String dueDateString = datePicker.getDayOfMonth()+ "/" + datePicker.getMonth()+1 + "/" + datePicker.getYear();
@@ -115,19 +121,27 @@ public class TaskViewActivity extends AppCompatActivity {
 
                 //TODO: implement date converter util
                 String dueDateString = "";
-                if(datePicker.getDayOfMonth() < 10){
+                if (datePicker.getDayOfMonth() < 10) {
                     dueDateString += "0";
                 }
                 dueDateString += datePicker.getDayOfMonth() + "/";
-                if((datePicker.getMonth()+1) < 10){
+                if ((datePicker.getMonth() + 1) < 10) {
                     dueDateString += "0";
                 }
                 dueDateString += (datePicker.getMonth() + 1) + "/" + datePicker.getYear();
                 task.dueDateString = dueDateString;
                 task.priority = prioritySpinner.getSelectedItemPosition();
-                dbHelper.updateData(task);
-                finish();
+
             }
+
+            if(!isNewTask){
+                dbHelper.updateData(task);
+            }else{
+                dbHelper.addData(task);
+            }
+
+            finish();
+
         });
     }
 }

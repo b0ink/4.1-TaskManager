@@ -1,6 +1,7 @@
 package com.example.taskmanager.ui.tasks;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -68,9 +69,13 @@ public class TaskFragment extends Fragment {
 
         btnAddTask = root.findViewById(R.id.btn_add_task);
         btnAddTask.setOnClickListener((View view) -> {
-            int position = tasks.size();
-            tasks.add(new Task("NEW TASK!", "finish 21123123", "01/07/2049", 0, 2));
-            adapter.notifyItemInserted(position);
+//            int position = tasks.size();
+//            tasks.add(new Task("NEW TASK!", "finish 21123123", "01/07/2049", 0, 2));
+//            adapter.notifyItemInserted(position);
+
+            Intent intent = new Intent(root.getContext(), TaskViewActivity.class);
+            intent.putExtra(TaskViewActivity.EXTRA_TASK_ACTION, "new");
+            root.getContext().startActivity(intent);
         });
         return root;
     }
