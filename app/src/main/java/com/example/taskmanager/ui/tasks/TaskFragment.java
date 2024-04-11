@@ -140,7 +140,6 @@ public class TaskFragment extends Fragment {
             });
         }
         SortTasksByCompletion();
-        adapter.notifyDataSetChanged();
     }
 
     public void SortTasksByPriority(String type) {
@@ -160,7 +159,6 @@ public class TaskFragment extends Fragment {
         }
 
         SortTasksByCompletion();
-        adapter.notifyDataSetChanged();
     }
 
     public void SortTasksByCompletion(){
