@@ -34,6 +34,9 @@ public class TaskViewActivity extends AppCompatActivity {
     public static final String EXTRA_TASK_DESC = "task_description";
     public static final String EXTRA_TASK_DUEDATE = "task_duedate";
     public static final String EXTRA_TASK_PRIORITY = "task_priority";
+    public static final String EXTRA_TASK_COMPLETE = "task_complete";
+
+
 
     private ImageButton closeButton;
     private TextView titleTextView;
@@ -86,9 +89,10 @@ public class TaskViewActivity extends AppCompatActivity {
                 String taskDate = resultsIntent.getStringExtra(TaskViewActivity.EXTRA_TASK_DUEDATE);
                 int taskId = resultsIntent.getIntExtra(TaskViewActivity.EXTRA_TASK_ID, 0);
                 int taskPriority = resultsIntent.getIntExtra(TaskViewActivity.EXTRA_TASK_PRIORITY, 0);
+                Boolean taskIsComplete = resultsIntent.getBooleanExtra(TaskViewActivity.EXTRA_TASK_COMPLETE, false);
 
 
-                task = new Task(taskTitle, taskDesc, taskDate, 0, taskPriority);
+                task = new Task(taskTitle, taskDesc, taskDate, 0, taskPriority, taskIsComplete);
                 task.id = taskId;
                 titleTextView.setText("Edit task");
                 addButton.setText("Save task");
@@ -109,7 +113,7 @@ public class TaskViewActivity extends AppCompatActivity {
         addButton.setOnClickListener((View view) -> {
             Boolean isNewTask = false;
             if(task == null){
-                task = new Task("", "", "01/01/1970", 0, 0);
+                task = new Task("", "", "01/01/1970", 0, 0, false);
                 isNewTask = true;
             }
 

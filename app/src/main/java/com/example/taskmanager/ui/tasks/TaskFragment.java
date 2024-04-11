@@ -93,8 +93,9 @@ public class TaskFragment extends Fragment {
                 @SuppressLint("Range") String description = cursor.getString(cursor.getColumnIndex("Description"));
                 @SuppressLint("Range") String dueDate = cursor.getString(cursor.getColumnIndex("DueDate"));
                 @SuppressLint("Range") int priority = cursor.getInt(cursor.getColumnIndex("Priority"));
+                @SuppressLint("Range") Boolean isComplete = cursor.getInt(cursor.getColumnIndex("IsComplete")) != 0;
 
-                Task newtask = new Task(title, description, dueDate,0,  priority);
+                Task newtask = new Task(title, description, dueDate,0,  priority, isComplete);
                 newtask.id = id;
                 // Do something with the retrieved data (e.g., display it, process it)
 //                Log.d("Data", "ID: " + id + ", Name: " + name);

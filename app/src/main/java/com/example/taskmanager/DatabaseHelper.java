@@ -12,7 +12,7 @@ import com.example.taskmanager.ui.tasks.Task;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Database Version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // Database Name
     private static final String DATABASE_NAME = "TaskManagerTest1";
@@ -49,7 +49,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "Title" + " TEXT,"
                 + "Description" + " TEXT,"
                 + "DueDate" + " TEXT,"
-                + "Priority" + " INTEGER"
+                + "Priority" + " INTEGER,"
+                + "IsComplete" + " TINYINT(1)"
                 + ")";
         // Execute query
         db.execSQL(CREATE_TABLE);
@@ -74,6 +75,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put("Description", task.getDescription());
         contentValues.put("DueDate", task.dueDateString);
         contentValues.put("Priority", task.priority);
+        contentValues.put("IsComplete", task.isComplete);
 
         long result = db.insert(TABLE_NAME, null, contentValues);
         if(result != -1){
@@ -98,6 +100,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put("Description", task.getDescription());
         contentValues.put("DueDate", task.dueDateString);
         contentValues.put("Priority", task.priority);
+        contentValues.put("IsComplete", task.isComplete);
 
         String id = Integer.toString(task.id);
 

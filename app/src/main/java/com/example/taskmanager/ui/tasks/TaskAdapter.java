@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -124,6 +125,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
         private TextView priorityPill;
         private ImageView editButton;
+        private CheckBox checkbox;
 
 
         TaskViewHolder(@NonNull View itemView) {
@@ -134,6 +136,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             imagePriority = itemView.findViewById(R.id.image_priority);
             priorityPill = itemView.findViewById(R.id.priority_pill);
             editButton = itemView.findViewById(R.id.edit_button);
+            checkbox = itemView.findViewById(R.id.checkBox);
 
 
 //            itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -144,6 +147,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 //                    return true;
 //                }
 //            });
+
+            checkbox.setOnClickListener(view -> {
+                int position = getAdapterPosition();
+                Task task = taskList.get(position);
+                task.isComplete = checkbox.isChecked();
+                databaseHelper.updateData(task);
+                notifyItemChanged(position);
+            });
 
             editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -170,6 +181,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                                 intent.putExtra(TaskViewActivity.EXTRA_TASK_DESC, task.getDescription());
                                 intent.putExtra(TaskViewActivity.EXTRA_TASK_DUEDATE, task.dueDateString);
                                 intent.putExtra(TaskViewActivity.EXTRA_TASK_PRIORITY, task.priority);
+                                intent.putExtra(TaskViewActivity.EXTRA_TASK_COMPLETE, task.isComplete);
                                 itemView.getContext().startActivity(intent);
                                 //TODO: send them back to the add/edit task activity with prefilled details, option to save instead of add
                             } else if ("Set priority".equals(taskOptions[which])) {
@@ -208,6 +220,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             textTaskDescription.setText(task.getDescription());
             textDueDate.setText(task.getDueDate());
             imagePriority.setImageResource(task.getPriorityIcon());
+            checkbox.setChecked(task.isComplete);
 
             if (task.priority != Task.NO_PRIORITY) {
                 priorityPill.setVisibility(View.VISIBLE);

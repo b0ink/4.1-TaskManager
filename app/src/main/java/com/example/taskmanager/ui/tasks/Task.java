@@ -21,6 +21,8 @@ public class Task {
 
     public LocalDate dueDate;
     public String dueDateString;
+
+    public Boolean isComplete;
 //    = LocalDate.now(); // Create a date object
 
     public int priority;
@@ -31,16 +33,17 @@ public class Task {
 //        LOW_PRIORITY
 //    }
 
-    public Task(String title, String description, LocalDate dueDate, int priorityIcon, int priority) {
+    public Task(String title, String description, LocalDate dueDate, int priorityIcon, int priority, Boolean isComplete) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.priorityIcon = priorityIcon;
         this.priority = priority;
+        this.isComplete = isComplete;
     }
 
     @SuppressLint("NewApi")
-    public Task(String title, String description, String dueDate, int priorityIcon, int priority) {
+    public Task(String title, String description, String dueDate, int priorityIcon, int priority, Boolean isComplete) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate date = LocalDate.parse(dueDate, formatter);
         this.title = title;
@@ -49,6 +52,7 @@ public class Task {
         this.priorityIcon = priorityIcon;
         this.priority = priority;
         this.dueDateString = dueDate;
+        this.isComplete = isComplete;
     }
 
     public String getTitle() {
