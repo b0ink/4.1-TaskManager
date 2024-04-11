@@ -15,6 +15,7 @@ import com.example.taskmanager.R;
 
 
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -67,6 +68,13 @@ public class TaskViewActivity extends AppCompatActivity {
         prioritySpinner = findViewById(R.id.spinner_priority);
         addButton = findViewById(R.id.button_add_task);
 
+        ArrayAdapter<String> priorityAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
+        priorityAdapter.add("Priority: None");
+        priorityAdapter.add("Priority: Low");
+        priorityAdapter.add("Priority: Medium");
+        priorityAdapter.add("Priority: High");
+        prioritySpinner.setAdapter(priorityAdapter);
+
         task = null;
 
         Intent resultsIntent = getIntent();
@@ -86,7 +94,7 @@ public class TaskViewActivity extends AppCompatActivity {
                 addButton.setText("Save task");
                 titleEditText.setText(taskTitle);
                 descriptionEditText.setText(taskDesc);
-
+                prioritySpinner.setSelection(taskPriority);
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                     int year = task.dueDate.getYear();
                     int month = task.dueDate.getMonthValue() - 1; // Months in DatePicker are 0-indexed
@@ -116,7 +124,7 @@ public class TaskViewActivity extends AppCompatActivity {
                 }
                 dueDateString += (datePicker.getMonth() + 1) + "/" + datePicker.getYear();
                 task.dueDateString = dueDateString;
-
+                task.priority = prioritySpinner.getSelectedItemPosition();
                 dbHelper.updateData(task);
                 finish();
             }
