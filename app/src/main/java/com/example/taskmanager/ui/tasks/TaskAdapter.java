@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -158,6 +159,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                 }else{
                     notifyItemMoved(position, 0);
                 }
+
+                if(task.isComplete){
+                    textTaskTitle.setPaintFlags(textTaskTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    textTaskDescription.setPaintFlags(textTaskDescription.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                }else{
+                    textTaskTitle.setPaintFlags(textTaskTitle.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                    textTaskDescription.setPaintFlags(textTaskDescription.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                }
             });
 
             editButton.setOnClickListener(new View.OnClickListener() {
@@ -236,6 +245,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             textDueDate.setText(task.getDueDate());
             imagePriority.setImageResource(task.getPriorityIcon());
             checkbox.setChecked(task.isComplete);
+
+            if(task.isComplete){
+                textTaskTitle.setPaintFlags(textTaskTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                textTaskDescription.setPaintFlags(textTaskDescription.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            }else{
+                textTaskTitle.setPaintFlags(textTaskTitle.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                textTaskDescription.setPaintFlags(textTaskDescription.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+            }
 
             if (task.priority != Task.NO_PRIORITY) {
                 priorityPill.setVisibility(View.VISIBLE);
