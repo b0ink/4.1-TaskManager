@@ -2,8 +2,10 @@ package com.example.taskmanager.ui.tasks;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -167,6 +169,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     textTaskTitle.setPaintFlags(textTaskTitle.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                     textTaskDescription.setPaintFlags(textTaskDescription.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                 }
+
+
             });
 
             editButton.setOnClickListener(new View.OnClickListener() {
@@ -239,6 +243,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             builder.show();
         }
 
+        @SuppressLint("ResourceAsColor")
         void bind(Task task) {
             textTaskTitle.setText(task.getTitle());
             textTaskDescription.setText(task.getDescription());
@@ -252,6 +257,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             }else{
                 textTaskTitle.setPaintFlags(textTaskTitle.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                 textTaskDescription.setPaintFlags(textTaskDescription.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+            }
+
+            if(task.isOverdue()){
+                textDueDate.setTextColor(Color.parseColor("#FF0000"));
+            }else{
+                textDueDate.setTextColor(Color.parseColor("#000000"));
             }
 
             if (task.priority != Task.NO_PRIORITY) {
