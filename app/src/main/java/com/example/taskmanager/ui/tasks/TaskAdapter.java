@@ -51,9 +51,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         if (position < 0 || position > taskList.size()) {
             throw new IndexOutOfBoundsException("Invalid task specified");
         }
-        //TODO: database/localstorage update as well
-        taskList.remove(position);
-        notifyItemRemoved(position);
+        Task task = taskList.get(position);
+
+        if(databaseHelper.deleteData(task)){
+            taskList.remove(position);
+            notifyItemRemoved(position);
+        }
+
     }
 
     public void changeTaskPriority(final int position, int priority){

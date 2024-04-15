@@ -141,12 +141,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return affectedRows > 0;
     }
 
-//
-//    // Method to delete data from the database
-//    public boolean deleteData(String id) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        int affectedRows = db.delete(TABLE_NAME, COLUMN_ID + " = ?", new String[]{id});
-//        // Returns true if data is deleted successfully, false otherwise
-//        return affectedRows > 0;
-//    }
+    public boolean deleteData(Task task) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String id = "";
+        id = String.valueOf(task.id);
+
+        int affectedRows = db.delete(TABLE_NAME, COLUMN_ID + " = ?", new String[]{id});
+        return affectedRows > 0;
+    }
 }
