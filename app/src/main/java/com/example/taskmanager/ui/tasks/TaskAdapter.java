@@ -174,6 +174,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     textTaskDescription.setPaintFlags(textTaskDescription.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                 }
 
+                if(task.isOverdue() && !task.isComplete){
+                    textDueDate.setTextColor(Color.parseColor("#FF0000"));
+                }else{
+                    textDueDate.setTextColor(Color.parseColor("#000000"));
+                }
 
             });
 
@@ -263,7 +268,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                 textTaskDescription.setPaintFlags(textTaskDescription.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             }
 
-            if(task.isOverdue()){
+            if(task.isOverdue() && !task.isComplete){
                 textDueDate.setTextColor(Color.parseColor("#FF0000"));
             }else{
                 textDueDate.setTextColor(Color.parseColor("#000000"));
