@@ -72,6 +72,15 @@ public class HomeFragment extends Fragment {
         int completedPct = (int)((double)completedTasks/(double)totalTasks*100.0);
         int overduePct = (int)((double)overdueTasks/(double)totalTasks*100.0);
 
+        tvCompletedTasks.setText("0%");
+        tvOverdueTasks.setText("0%");
+
+        pbCompletedTasks.setMax(100);
+        pbOverdueTasks.setMax(100);
+
+        pbCompletedTasks.setProgress(0);
+        pbOverdueTasks.setProgress(0);
+
         setProgressBars(tvCompletedTasks, pbCompletedTasks, completedPct);
         setProgressBars(tvOverdueTasks, pbOverdueTasks, overduePct);
 
