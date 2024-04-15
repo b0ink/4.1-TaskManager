@@ -109,4 +109,18 @@ public class Task {
                 return "th";
         }
     }
+
+    public boolean isOverdue() {
+        LocalDate today = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            today = LocalDate.now();
+
+            // Compare storedDate with today's date
+            if (this.dueDate.isBefore(today)) {
+                System.out.println("The stored date is before today's date.");
+                return true;
+            }
+        }
+        return false;
+    }
 }
