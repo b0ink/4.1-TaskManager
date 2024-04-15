@@ -25,6 +25,7 @@ import com.example.taskmanager.DatabaseHelper;
 import com.example.taskmanager.R;
 import com.example.taskmanager.databinding.FragmentTaskBinding;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -178,32 +179,8 @@ public class TaskFragment extends Fragment {
     }
 
     public void getData() {
-        Cursor cursor = dbHelper.getData();
-
         tasks.clear();
-        // Check if the cursor is not null and move it to the first row
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_ID));
-                @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex("Title"));
-                @SuppressLint("Range") String description = cursor.getString(cursor.getColumnIndex("Description"));
-                @SuppressLint("Range") String dueDate = cursor.getString(cursor.getColumnIndex("DueDate"));
-                @SuppressLint("Range") int priority = cursor.getInt(cursor.getColumnIndex("Priority"));
-                @SuppressLint("Range") Boolean isComplete = cursor.getInt(cursor.getColumnIndex("IsComplete")) != 0;
-
-                Task newtask = new Task(title, description, dueDate, 0, priority, isComplete);
-                newtask.id = id;
-                // Do something with the retrieved data (e.g., display it, process it)
-//                Log.d("Data", "ID: " + id + ", Name: " + name);
-                tasks.add((newtask));
-            } while (cursor.moveToNext()); // Move to the next row if available
-        }
-
-        // Close the cursor after use to release resources
-        if (cursor != null) {
-            cursor.close();
-        }
-
+        tasks.addAll(dbHelper.getTasks());
         SortTasksByDueDate("newest");
     }
 

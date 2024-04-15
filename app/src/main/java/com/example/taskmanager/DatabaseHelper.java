@@ -1,5 +1,6 @@
 package com.example.taskmanager;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -8,6 +9,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.taskmanager.ui.tasks.Task;
+
+import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -78,7 +81,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put("IsComplete", task.isComplete);
 
         long result = db.insert(TABLE_NAME, null, contentValues);
-        if(result != -1){
+        if (result != -1) {
             Log.d("DatabaseHelper", "Added task successfully");
         }
         // Returns true if data is inserted successfully, false otherwise
@@ -86,9 +89,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Method to retrieve data from the database
-    public Cursor getData() {
+    public ArrayList<Task> getTasks() {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+
+        ArrayList<Task> tasks = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_ID));
+                @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex("Title"));
+                @SuppressLint("Range") String description = cursor.getString(cursor.getColumnIndex("Description"));
+                @SuppressLint("Range") String dueDate = cursor.getString(cursor.getColumnIndex("DueDate"));
+                @SuppressLint("Range") int priority = cursor.getInt(cursor.getColumnIndex("Priority"));
+                @SuppressLint("Range") Boolean isComplete = cursor.getInt(cursor.getColumnIndex("IsComplete")) != 0;
+
+                Task newtask = new Task(title, description, dueDate, 0, priority, isComplete);
+                newtask.id = id;
+                // Do something with the retrieved data (e.g., display it, process it)
+//                Log.d("Data", "ID: " + id + ", Name: " + name);
+                tasks.add((newtask));
+            } while (cursor.moveToNext()); // Move to the next row if available
+        }
+        if(cursor != null){
+            cursor.close();
+        }
+
+        return tasks;
     }
 
     // Method to update data in the database
@@ -105,10 +132,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String id = Integer.toString(task.id);
 
         int affectedRows = db.update(TABLE_NAME, contentValues, COLUMN_ID + " = ?", new String[]{id});
-        if(affectedRows > 0){
+        if (affectedRows > 0) {
             Log.d("DatabaseHelper", "saved task successfully");
 
-        }else{
+        } else {
             Log.d("DatabaseHelper", "failed to save task ");
         }
         return affectedRows > 0;
