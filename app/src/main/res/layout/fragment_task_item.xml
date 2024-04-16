@@ -63,15 +63,6 @@
             android:textColor="@android:color/black"
             android:textSize="14sp" />
 
-        <!-- Priority Indicator -->
-        <ImageView
-            android:id="@+id/image_priority"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text_due_date"
-            android:layout_marginTop="8dp"
-            android:src="@drawable/ic_menu_camera" />
-
         <!-- Edit Button (Options Menu) -->
         <ImageView
             android:id="@+id/edit_button"

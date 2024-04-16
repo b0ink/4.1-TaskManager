@@ -132,9 +132,9 @@ public class TaskFragment extends Fragment {
                 @Override
                 public int compare(Task o1, Task o2) {
                     if (Objects.equals(type, "newest")) {
-                        return o1.dueDate.compareTo(o2.dueDate);
+                        return o1.dueDate.getDate().compareTo(o2.dueDate.getDate());
                     } else if (Objects.equals(type, "oldest")) {
-                        return o2.dueDate.compareTo(o1.dueDate);
+                        return o2.dueDate.getDate().compareTo(o1.dueDate.getDate());
                     }
                     return 0;
                 }

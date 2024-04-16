@@ -128,7 +128,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         private TextView textTaskTitle;
         private TextView textTaskDescription;
         private TextView textDueDate;
-        private ImageView imagePriority;
 
         private TextView priorityPill;
         private ImageView editButton;
@@ -140,7 +139,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             textTaskTitle = itemView.findViewById(R.id.text_task_title);
             textTaskDescription = itemView.findViewById(R.id.text_task_description);
             textDueDate = itemView.findViewById(R.id.text_due_date);
-            imagePriority = itemView.findViewById(R.id.image_priority);
             priorityPill = itemView.findViewById(R.id.priority_pill);
             editButton = itemView.findViewById(R.id.edit_button);
             checkbox = itemView.findViewById(R.id.checkBox);
@@ -209,11 +207,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                                 intent.putExtra(TaskViewActivity.EXTRA_TASK_ID, task.id);
                                 intent.putExtra(TaskViewActivity.EXTRA_TASK_TITLE, task.getTitle());
                                 intent.putExtra(TaskViewActivity.EXTRA_TASK_DESC, task.getDescription());
-                                intent.putExtra(TaskViewActivity.EXTRA_TASK_DUEDATE, task.dueDateString);
+                                intent.putExtra(TaskViewActivity.EXTRA_TASK_DUEDATE, task.dueDate.toString());
                                 intent.putExtra(TaskViewActivity.EXTRA_TASK_PRIORITY, task.priority);
                                 intent.putExtra(TaskViewActivity.EXTRA_TASK_COMPLETE, task.isComplete);
                                 itemView.getContext().startActivity(intent);
-                                //TODO: send them back to the add/edit task activity with prefilled details, option to save instead of add
                             } else if ("Mark complete".equals(taskOptions[which])) {
                                 task.isComplete = true;
                                 databaseHelper.updateData(task);
@@ -256,8 +253,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         void bind(Task task) {
             textTaskTitle.setText(task.getTitle());
             textTaskDescription.setText(task.getDescription());
-            textDueDate.setText(task.getDueDate());
-            imagePriority.setImageResource(task.getPriorityIcon());
+            textDueDate.setText(task.dueDate.toPrettyString());
             checkbox.setChecked(task.isComplete);
 
             if(task.isComplete){

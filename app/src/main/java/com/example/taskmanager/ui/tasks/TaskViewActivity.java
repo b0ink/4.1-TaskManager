@@ -23,7 +23,6 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.time.LocalDate;
 
 public class TaskViewActivity extends AppCompatActivity {
 
@@ -92,7 +91,7 @@ public class TaskViewActivity extends AppCompatActivity {
                 Boolean taskIsComplete = resultsIntent.getBooleanExtra(TaskViewActivity.EXTRA_TASK_COMPLETE, false);
 
 
-                task = new Task(taskTitle, taskDesc, taskDate, 0, taskPriority, taskIsComplete);
+                task = new Task(taskTitle, taskDesc, taskDate, taskPriority, taskIsComplete);
                 task.id = taskId;
                 titleTextView.setText("Edit task");
                 addButton.setText("Save task");
@@ -100,9 +99,13 @@ public class TaskViewActivity extends AppCompatActivity {
                 descriptionEditText.setText(taskDesc);
                 prioritySpinner.setSelection(taskPriority);
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                    int year = task.dueDate.getYear();
-                    int month = task.dueDate.getMonthValue() - 1; // Months in DatePicker are 0-indexed
-                    int day = task.dueDate.getDayOfMonth();
+                    int year = task.dueDate.getDate().getYear();
+                    int month = task.dueDate.getDate().getMonthValue() - 1; // Months in DatePicker are 0-indexed
+                    int day = task.dueDate.getDate().getDayOfMonth();
+
+                    System.out.println(task.dueDate.toPrettyString());
+                    System.out.println(task.dueDate.toString());
+
                     datePicker.updateDate(year, month, day);
                 }
 
@@ -113,29 +116,15 @@ public class TaskViewActivity extends AppCompatActivity {
         addButton.setOnClickListener((View view) -> {
             Boolean isNewTask = false;
             if(task == null){
-                task = new Task("", "", "01/01/1970", 0, 0, false);
+                task = new Task("", "", "01/01/1970", 0, false);
                 isNewTask = true;
             }
 
             if (task != null) {
                 task.setTitle(titleEditText.getText().toString());
                 task.setDescription(descriptionEditText.getText().toString());
-//                String dueDateString = datePicker.getDayOfMonth()+ "/" + datePicker.getMonth()+1 + "/" + datePicker.getYear();
-//                String dueDateString = datePicker.getDayOfMonth() + "/" + (datePicker.getMonth() + 1) + "/" + datePicker.getYear();
-
-                //TODO: implement date converter util
-                String dueDateString = "";
-                if (datePicker.getDayOfMonth() < 10) {
-                    dueDateString += "0";
-                }
-                dueDateString += datePicker.getDayOfMonth() + "/";
-                if ((datePicker.getMonth() + 1) < 10) {
-                    dueDateString += "0";
-                }
-                dueDateString += (datePicker.getMonth() + 1) + "/" + datePicker.getYear();
-                task.dueDateString = dueDateString;
+                task.dueDate.setDate(datePicker);
                 task.priority = prioritySpinner.getSelectedItemPosition();
-
             }
 
             if(!isNewTask){

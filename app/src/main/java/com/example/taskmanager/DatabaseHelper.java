@@ -76,7 +76,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         contentValues.put("Title", task.getTitle());
         contentValues.put("Description", task.getDescription());
-        contentValues.put("DueDate", task.dueDateString);
+        contentValues.put("DueDate", task.dueDate.toString());
         contentValues.put("Priority", task.priority);
         contentValues.put("IsComplete", task.isComplete);
 
@@ -104,7 +104,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 @SuppressLint("Range") int priority = cursor.getInt(cursor.getColumnIndex("Priority"));
                 @SuppressLint("Range") Boolean isComplete = cursor.getInt(cursor.getColumnIndex("IsComplete")) != 0;
 
-                Task newtask = new Task(title, description, dueDate, 0, priority, isComplete);
+                Task newtask = new Task(title, description, dueDate, priority, isComplete);
                 newtask.id = id;
                 // Do something with the retrieved data (e.g., display it, process it)
 //                Log.d("Data", "ID: " + id + ", Name: " + name);
@@ -125,7 +125,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         contentValues.put("Title", task.getTitle());
         contentValues.put("Description", task.getDescription());
-        contentValues.put("DueDate", task.dueDateString);
+        contentValues.put("DueDate", task.dueDate.toString());
         contentValues.put("Priority", task.priority);
         contentValues.put("IsComplete", task.isComplete);
 
