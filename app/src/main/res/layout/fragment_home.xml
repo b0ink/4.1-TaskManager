@@ -16,6 +16,16 @@
         tools:layout_editor_absoluteY="25dp">
 
         <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Task Manager"
+            android:textAlignment="center"
+            android:textColor="#005FB3"
+            android:textSize="42sp"
+            android:textStyle="bold" />
+
+        <TextView
             android:id="@+id/completed_tasks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -52,7 +62,6 @@
                 android:layout_centerInParent="true"
                 android:fontFamily="@font/lato_bold"
                 android:gravity="center"
-                android:text="50%"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="35dp"
@@ -95,13 +104,20 @@
                 android:layout_centerInParent="true"
                 android:fontFamily="@font/lato_bold"
                 android:gravity="center"
-                android:text="50%"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="35dp"
                 android:textStyle="bold" />
 
         </RelativeLayout>
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="75dp"
+            android:text="View Tasks" />
     </LinearLayout>
 
     <LinearLayout
