@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -53,25 +54,25 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         }
         Task task = taskList.get(position);
 
-        if(databaseHelper.deleteData(task)){
+        if (databaseHelper.deleteData(task)) {
             taskList.remove(position);
             notifyItemRemoved(position);
         }
 
     }
 
-    public void changeTaskPriority(final int position, int priority){
+    public void changeTaskPriority(final int position, int priority) {
         if (position < 0 || position > taskList.size()) {
             throw new IndexOutOfBoundsException("Invalid task specified");
         }
 
-        if(priority < 0 || priority > 3){
+        if (priority < 0 || priority > 3) {
             return;
         }
 
 
         Task task = taskList.get(position);
-        task.priority = priority; // TODO: add private method to udpate priority;
+        task.priority = priority;
         databaseHelper.updateData(task);
         notifyItemChanged(position);
 
@@ -88,7 +89,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_task_item, parent, false);
         return new TaskViewHolder(view);
     }
-
 
 
     @Override
@@ -144,37 +144,28 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             checkbox = itemView.findViewById(R.id.checkBox);
 
 
-//            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-//                @Override
-//                public boolean onLongClick(View v) {
-//                    int position = getAdapterPosition();
-//                    showDeleteDialog(position);
-//                    return true;
-//                }
-//            });
-
             checkbox.setOnClickListener(view -> {
                 int position = getAdapterPosition();
                 Task task = taskList.get(position);
                 task.isComplete = checkbox.isChecked();
                 databaseHelper.updateData(task);
-                if(task.isComplete){
-                    notifyItemMoved(position, taskList.size()-1);
-                }else{
+                if (task.isComplete) {
+                    notifyItemMoved(position, taskList.size() - 1);
+                } else {
                     notifyItemMoved(position, 0);
                 }
 
-                if(task.isComplete){
+                if (task.isComplete) {
                     textTaskTitle.setPaintFlags(textTaskTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     textTaskDescription.setPaintFlags(textTaskDescription.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                }else{
+                } else {
                     textTaskTitle.setPaintFlags(textTaskTitle.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                     textTaskDescription.setPaintFlags(textTaskDescription.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                 }
 
-                if(task.isOverdue() && !task.isComplete){
+                if (task.isOverdue() && !task.isComplete) {
                     textDueDate.setTextColor(Color.parseColor("#FF0000"));
-                }else{
+                } else {
                     textDueDate.setTextColor(Color.parseColor("#000000"));
                 }
 
@@ -190,7 +181,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     };
 
                     Task task = taskList.get(getAdapterPosition());
-                    if(task.isComplete){
+                    if (task.isComplete) {
                         taskOptions[3] = "Mark incomplete";
                     }
 
@@ -231,7 +222,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         }
 
 
-
         private void showChangePriorityDialog(final int position) {
             AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
 
@@ -256,17 +246,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             textDueDate.setText(task.dueDate.toPrettyString());
             checkbox.setChecked(task.isComplete);
 
-            if(task.isComplete){
+            if (task.isComplete) {
                 textTaskTitle.setPaintFlags(textTaskTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 textTaskDescription.setPaintFlags(textTaskDescription.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            }else{
+            } else {
                 textTaskTitle.setPaintFlags(textTaskTitle.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                 textTaskDescription.setPaintFlags(textTaskDescription.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             }
 
-            if(task.isOverdue() && !task.isComplete){
+            if (task.isOverdue() && !task.isComplete) {
                 textDueDate.setTextColor(Color.parseColor("#FF0000"));
-            }else{
+            } else {
                 textDueDate.setTextColor(Color.parseColor("#000000"));
             }
 
@@ -299,14 +289,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         }
 
         private void showDeleteDialog(final int position) {
-            // consider BottomSheetDialog for multiple options
             AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
             builder.setMessage("Are you sure you want to delete this task?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-//                            taskList.remove(position);
-//                            notifyItemRemoved(position);
                             DeleteTask(position);
                         }
                     })
@@ -314,6 +301,4 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     .show();
         }
     }
-
-
 }

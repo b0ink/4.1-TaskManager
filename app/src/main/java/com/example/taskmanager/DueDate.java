@@ -58,8 +58,6 @@ public class DueDate {
     }
 
 
-
-
     @NonNull
     public String toPrettyString() {
         DateTimeFormatter formatter = null;
@@ -96,7 +94,8 @@ public class DueDate {
      */
     @SuppressLint("NewApi")
     public int daysUntilDue() {
-        LocalDate today = LocalDate.now();;
+        LocalDate today = LocalDate.now();
+        ;
         int days = (int) ChronoUnit.DAYS.between(this.date, today);
         if (this.date.isBefore(today)) {
             return Math.abs(days) * -1;

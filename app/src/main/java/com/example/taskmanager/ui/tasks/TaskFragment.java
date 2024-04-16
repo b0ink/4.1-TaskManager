@@ -58,28 +58,26 @@ public class TaskFragment extends Fragment {
         galleryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
 
-//        recyclerViewTasks = findViewById(R.id.recycler_view_tasks);
         recyclerViewTasks = root.findViewById(R.id.recycler_view_tasks);
         spnSortBy = root.findViewById(R.id.spinner_sortby);
 
         recyclerViewTasks.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        //TODO: on change of fragment (switching between dashboard/tasks/etc), data set is lost
-        // -> dataset must be dynamically retrieved everytime here
-        // -> don't bother with a local storage/cache if using sqlite
-        // -> look into SyncAdapters?
 
-//        List<Task> tasks = new ArrayList<Task>();
         dbHelper = new DatabaseHelper(root.getContext());
         adapter = new TaskAdapter(root.getContext(), tasks);
 
+        /* Pull tasks from sqlite db*/
         getData();
 
+
+        /* Sorting options */
         sortByOptions = new ArrayAdapter<>(root.getContext(), android.R.layout.simple_spinner_item);
         sortByOptions.add("Sort by: Due date ▲");
         sortByOptions.add("Sort by: Due date ▼");
         sortByOptions.add("Sort by: Priority ▲");
         sortByOptions.add("Sort by: Priority ▼");
+
 
         spnSortBy.setAdapter(sortByOptions);
         AdapterView.OnItemSelectedListener spinnerSortByChanged = new AdapterView.OnItemSelectedListener() {
@@ -89,9 +87,9 @@ public class TaskFragment extends Fragment {
                     SortTasksByDueDate("newest");
                 } else if (position == 1) {
                     SortTasksByDueDate("oldest");
-                }else if (position == 2){
+                } else if (position == 2) {
                     SortTasksByPriority("lowest");
-                }else if (position == 3){
+                } else if (position == 3) {
                     SortTasksByPriority("highest");
                 }
             }
@@ -105,18 +103,12 @@ public class TaskFragment extends Fragment {
         spnSortBy.setOnItemSelectedListener(spinnerSortByChanged);
 
 
-//        tasks.add(new Task("do homework", "finish this", "21/05/2025", 0, 1));
-//        tasks.add(new Task("clean house", "finish asdf", "05/11/2025", 0, 2));
-//        tasks.add(new Task("do nothing", "finish 21123123", "05/09/2024", 0, 3));
-
         recyclerViewTasks.setAdapter(adapter);
 
+
+        /* Add new task */
         btnAddTask = root.findViewById(R.id.btn_add_task);
         btnAddTask.setOnClickListener((View view) -> {
-//            int position = tasks.size();
-//            tasks.add(new Task("NEW TASK!", "finish 21123123", "01/07/2049", 0, 2));
-//            adapter.notifyItemInserted(position);
-
             Intent intent = new Intent(root.getContext(), TaskViewActivity.class);
             intent.putExtra(TaskViewActivity.EXTRA_TASK_ACTION, "new");
             root.getContext().startActivity(intent);
@@ -162,7 +154,7 @@ public class TaskFragment extends Fragment {
         SortTasksByCompletion();
     }
 
-    public void SortTasksByCompletion(){
+    public void SortTasksByCompletion() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             tasks.sort(new Comparator<Task>() {
