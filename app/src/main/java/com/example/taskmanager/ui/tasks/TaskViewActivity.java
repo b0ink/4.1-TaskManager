@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class TaskViewActivity extends AppCompatActivity {
@@ -120,9 +121,22 @@ public class TaskViewActivity extends AppCompatActivity {
                 isNewTask = true;
             }
 
+            String title = titleEditText.getText().toString();
+            String description = descriptionEditText.getText().toString();
+
+            if(title.isEmpty()){
+                Toast.makeText(this, "Title cannot be empty", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if(description.isEmpty()){
+                Toast.makeText(this, "Description cannot be empty", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             if (task != null) {
-                task.setTitle(titleEditText.getText().toString());
-                task.setDescription(descriptionEditText.getText().toString());
+                task.setTitle(title);
+                task.setDescription(description);
                 task.dueDate.setDate(datePicker);
                 task.priority = prioritySpinner.getSelectedItemPosition();
             }
